@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// --- 1. Define the User Schema and Model ---
+
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-// Middleware to hash the password before saving a new user
+
 UserSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
@@ -23,7 +23,7 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
-// Custom method to compare plain-text password with the stored hash
+
 UserSchema.methods.comparePassword = async function (candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password);
 };
